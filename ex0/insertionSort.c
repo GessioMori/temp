@@ -2,14 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-void swap(int *xp, int *yp)
-{
-  printf("Swapping %d and %d...\n", *xp, *yp);
-  int temp = *xp;
-  *xp = *yp;
-  *yp = temp;
-}
-
 void printArray(int *arr, int size)
 {
   int i;
@@ -21,27 +13,27 @@ void printArray(int *arr, int size)
   printf("\n");
 }
 
-void bubbleSort(int arr[], int n)
+void insertionSort(int arr[], int n)
 {
-  int i, j, k;
-  k = 0;
-  for (i = 0; i < n - 1; i++)
+  int i, j, k, interactions = 0;
+  for (i = 1; i < n; i++)
   {
-    for (j = 0; j < n - i - 1; j++)
+    k = arr[i];
+    printf("Taking %d, in position %d as the key...\n", k, i);
+    j = i - 1;
+    while (j >= 0 && arr[j] > k)
     {
-      if (arr[j] > arr[j + 1])
-      {
-        swap(&arr[j], &arr[j + 1]);
-      }
-      else
-      {
-        printf("No swap between %d and %d\n", arr[j], arr[j + 1]);
-      }
-      k++;
-      printf("Array after %d iteration: ", k);
+      arr[j + 1] = arr[j];
+      j--;
+      interactions++;
+      printf("Moving %d to the right...\n", arr[j + 1]);
+      printf("Array after this iteration: ");
       printArray(arr, n);
     }
+    printf("Inserting %d to the right of %d...\n", k, arr[j]);
+    arr[j + 1] = k;
   }
+  printf("Total interactions: %d\n", interactions);
 }
 
 int createRandomArray(int *arr, int n)
@@ -69,16 +61,12 @@ int main()
     exit(EXIT_FAILURE);
   }
 
-  printf("%d\n", sizeof(arr));
-  /* printf("1: %d\n", sizeof(array));
-  printf("2: %d\n", sizeof(array[0])); */
-
   createRandomArray(array, length);
 
   printf("Unsorted array: \n");
   printArray(array, length);
 
-  bubbleSort(array, length);
+  insertionSort(array, length);
 
   printf("Sorted array: \n");
   printArray(array, length);
