@@ -21,7 +21,7 @@ void printArray(int *arr, int size)
   printf("\n");
 }
 
-void bubbleSort(int arr[], int n)
+void selectionSort(int arr[], int n)
 {
   int i, j, k;
   k = 0;
@@ -78,7 +78,7 @@ int main()
   printf("Unsorted array: \n");
   printArray(array, length);
 
-  bubbleSort(array, length);
+  selectionSort(array, length);
 
   printf("Sorted array: \n");
   printArray(array, length);

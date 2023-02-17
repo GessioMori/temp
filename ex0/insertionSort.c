@@ -51,10 +51,8 @@ int main()
   printf("Enter the length of the array: \n");
 
   int length;
-  scanf("%d", &length);
 
   int *array = malloc(length * sizeof(int));
-  int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 
   if (!array)
   {

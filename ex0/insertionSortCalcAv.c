@@ -24,7 +24,7 @@ int createRandomArray(int *arr, int n)
 {
   int i;
   for (i = 0; i < n; i++)
-    arr[i] = rand() % 20;
+    arr[i] = rand() % 100;
 }
 
 int main()
@@ -32,8 +32,8 @@ int main()
 
   srand(time(NULL));
 
-  int length = 1000;
-  int numOfArrays = 1000;
+  int length = 100;
+  int numOfArrays = 10000;
 
   int arr[length];
   int arrOfInteractions[numOfArrays];
