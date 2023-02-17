@@ -140,6 +140,25 @@ void mergeSort(int *arr, int l, int r)
   }
 }
 
+void initMergeSort(int *arr, int n)
+{
+  mergeSort(arr, 0, n - 1);
+}
+
+double calcFuncTime(void (*func)(int *, int), int *arr, int n)
+{
+  clock_t start, end;
+  double cpu_time_used;
+
+  start = clock();
+  func(arr, n);
+  end = clock();
+
+  cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+  return cpu_time_used;
+}
+
 int main()
 {
   system("clear");
@@ -148,7 +167,7 @@ int main()
 
   int isRunning = 1;
 
-  int length = 100000;
+  int length = 50000;
 
   int originalArr[length];
   int arr[length];
@@ -156,9 +175,6 @@ int main()
   createRandomArray(originalArr, length);
 
   copyArray(originalArr, arr, length);
-
-  clock_t start, end;
-  double cpu_time_used;
 
   int choice;
 
@@ -180,47 +196,35 @@ int main()
       createRandomArray(originalArr, length);
       copyArray(originalArr, arr, length);
       system("clear");
-      printf("New random array created!\n");
+      printf("New random array created with %d elements\n", length);
       printf("________________________________________\n");
       break;
     case 2:
       copyArray(originalArr, arr, length);
-      start = clock();
-      bubbleSort(arr, length);
-      end = clock();
-      cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
       system("clear");
-      printf("Bubble Sort completed in: %f seconds\n", cpu_time_used);
+      printf("Running Bubble Sort with %d elements\n", length);
+      printf("Bubble Sort completed in: %f seconds\n", calcFuncTime(bubbleSort, arr, length));
       printf("________________________________________\n");
       break;
     case 3:
       copyArray(originalArr, arr, length);
-      start = clock();
-      insertionSort(arr, length);
-      end = clock();
-      cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
       system("clear");
-      printf("Insertion Sort completed in: %f seconds\n", cpu_time_used);
+      printf("Running Insertion Sort with %d elements\n", length);
+      printf("Insertion Sort completed in: %f seconds\n", calcFuncTime(insertionSort, arr, length));
       printf("________________________________________\n");
       break;
     case 4:
       copyArray(originalArr, arr, length);
-      start = clock();
-      selectionSort(arr, length);
-      end = clock();
-      cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
       system("clear");
-      printf("Selection Sort completed in: %f seconds\n", cpu_time_used);
+      printf("Running Selection Sort with %d elements\n", length);
+      printf("Selection Sort completed in: %f seconds\n", calcFuncTime(selectionSort, arr, length));
       printf("________________________________________\n");
       break;
     case 5:
       copyArray(originalArr, arr, length);
-      start = clock();
-      mergeSort(arr, 0, length - 1);
-      end = clock();
-      cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
       system("clear");
-      printf("Merge Sort completed in: %f seconds\n", cpu_time_used);
+      printf("Running Merge Sort with %d elements\n", length);
+      printf("Merge Sort completed in: %f seconds\n", calcFuncTime(initMergeSort, arr, length));
       printf("________________________________________\n");
       break;
     case 6:
