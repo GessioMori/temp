@@ -4,6 +4,7 @@
 void display();
 void push();
 void pop();
+void calcSize();
 
 struct node
 {
@@ -11,6 +12,7 @@ struct node
   struct node *next;
 };
 
+//
 struct node *head = NULL;
 
 int main()
@@ -22,10 +24,11 @@ int main()
   while (1)
   {
     printf("\n");
-    printf("1.Display\n");
-    printf("2.Push\n");
-    printf("3.Pop\n");
-    printf("4.Exit\n");
+    printf("1. Display\n");
+    printf("2. Push\n");
+    printf("3. Pop\n");
+    printf("4. Size\n");
+    printf("5. Exit\n");
     printf("Enter your choice:\t");
 
     scanf("%d", &choice);
@@ -44,6 +47,9 @@ int main()
       pop();
       break;
     case 4:
+      calcSize();
+      break;
+    case 5:
       exit(0);
       break;
     default:
@@ -81,12 +87,13 @@ void display()
   }
 }
 
+//
 void push()
 {
   struct node *temp;
   temp = (struct node *)malloc(sizeof(struct node));
 
-  if (temp == NULL)
+  if (!temp)
   {
     printf("Out of Memory Space\n");
     return;
@@ -108,6 +115,7 @@ void push()
   }
 }
 
+//
 void pop()
 {
   struct node *ptr;
@@ -123,4 +131,29 @@ void pop()
     printf("The deleted element is: %d\n", ptr->info);
     free(ptr);
   }
+}
+
+void calcSize()
+{
+  struct node *ptr = (struct node *)malloc(sizeof(struct node));
+
+  int counter = 0;
+
+  if (head == NULL)
+  {
+    printf("List is empty\n");
+    return;
+  }
+
+  ptr = head;
+
+  counter++;
+
+  while (ptr->next != NULL)
+  {
+    counter++;
+    ptr = ptr->next;
+  }
+
+  printf("List contains %d elements", counter);
 }
