@@ -7,7 +7,7 @@ void createRandomArray(int *arr, int n)
   int i;
   for (i = 0; i < n; i++)
   {
-    arr[i] = rand() % 20;
+    arr[i] = rand() % 100000;
   }
 }
 
@@ -29,16 +29,20 @@ void swap(int *xp, int *yp)
 
 void bubbleSort(int *arr, int n)
 {
-  int i, j;
+  int i, j, flag;
   for (i = 0; i < n - 1; i++)
   {
+    flag = 0;
     for (j = 0; j < n - i - 1; j++)
     {
       if (arr[j] > arr[j + 1])
       {
         swap(&arr[j], &arr[j + 1]);
+        flag = 1;
       }
     }
+    if (!flag)
+      break;
   }
 }
 
@@ -81,7 +85,8 @@ void merge(int *arr, int l, int m, int r)
   int n1 = m - l + 1;
   int n2 = r - m;
 
-  int L[n1], R[n2];
+  int *L = malloc(n1 * sizeof(int));
+  int *R = malloc(n2 * sizeof(int));
 
   for (i = 0; i < n1; i++)
   {
@@ -125,6 +130,9 @@ void merge(int *arr, int l, int m, int r)
     j++;
     k++;
   }
+
+  free(L);
+  free(R);
 }
 
 void mergeSort(int *arr, int l, int r)
@@ -145,16 +153,89 @@ void initMergeSort(int *arr, int n)
   mergeSort(arr, 0, n - 1);
 }
 
+int lomutoPartition(int *arr, int low, int high)
+{
+  int pivot = arr[high];
+  int i = (low - 1);
+  int j;
+  for (j = low; j <= high - 1; j++)
+  {
+    if (arr[j] <= pivot)
+    {
+      i++;
+      swap(&arr[i], &arr[j]);
+    }
+  }
+  swap(&arr[i + 1], &arr[high]);
+  return (i + 1);
+}
+
+int hoarePartition(int *arr, int low, int high)
+{
+  int pivot = arr[low];
+  int i = low - 1, j = high + 1;
+
+  while (1)
+  {
+    do
+    {
+      i++;
+    } while (arr[i] < pivot);
+
+    do
+    {
+      j--;
+    } while (arr[j] > pivot);
+
+    if (i >= j)
+    {
+      return j;
+    }
+
+    swap(&arr[i], &arr[j]);
+  }
+}
+
+void lomutoQuickSort(int *arr, int low, int high)
+{
+  if (low < high)
+  {
+    int pi = lomutoPartition(arr, low, high);
+    lomutoQuickSort(arr, low, pi - 1);
+    lomutoQuickSort(arr, pi + 1, high);
+  }
+}
+
+void initLomutoQuickSort(int *arr, int n)
+{
+  lomutoQuickSort(arr, 0, n - 1);
+}
+
+void hoareQuickSort(int *arr, int low, int high)
+{
+  if (low < high)
+  {
+    int pi = hoarePartition(arr, low, high);
+    hoareQuickSort(arr, low, pi - 1);
+    hoareQuickSort(arr, pi + 1, high);
+  }
+}
+
+void initHoareQuickSort(int *arr, int n)
+{
+  hoareQuickSort(arr, 0, n - 1);
+}
+
 double calcFuncTime(void (*func)(int *, int), int *arr, int n)
 {
-  clock_t start, end;
+  clock_t head, end;
   double cpu_time_used;
 
-  start = clock();
+  head = clock();
   func(arr, n);
   end = clock();
 
-  cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+  cpu_time_used = ((double)(end - head)) / CLOCKS_PER_SEC;
 
   return cpu_time_used;
 }
@@ -167,10 +248,10 @@ int main()
 
   int isRunning = 1;
 
-  int length = 50000;
+  int length = 10000000;
 
-  int originalArr[length];
-  int arr[length];
+  int *originalArr = malloc(length * sizeof(int));
+  int *arr = malloc(length * sizeof(int));
 
   createRandomArray(originalArr, length);
 
@@ -186,7 +267,9 @@ int main()
     printf("3. Insertion Sort\n");
     printf("4. Selection Sort\n");
     printf("5. Merge Sort\n");
-    printf("6. Exit\n");
+    printf("6. Lomuto's Quick Sort\n");
+    printf("7. Hoare's Quick Sort\n");
+    printf("8. Exit\n");
     printf("Enter your choice: ");
     scanf("%d", &choice);
 
@@ -228,6 +311,20 @@ int main()
       printf("________________________________________\n");
       break;
     case 6:
+      copyArray(originalArr, arr, length);
+      system("clear");
+      printf("Running Lomuto's Quick Sort with %d elements\n", length);
+      printf("Lomuto's Quick Sort completed in: %f seconds\n", calcFuncTime(initLomutoQuickSort, arr, length));
+      printf("________________________________________\n");
+      break;
+    case 7:
+      copyArray(originalArr, arr, length);
+      system("clear");
+      printf("Running Hoare's Quick Sort with %d elements\n", length);
+      printf("Hoare's Quick Sort completed in: %f seconds\n", calcFuncTime(initHoareQuickSort, arr, length));
+      printf("________________________________________\n");
+      break;
+    case 8:
       isRunning = 0;
       break;
     default:
