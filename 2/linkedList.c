@@ -8,14 +8,14 @@ struct node
   struct node *prev;
 };
 
-struct list
+typedef struct list
 {
   int size;
   struct node *start;
   struct node *end;
-};
+} List;
 
-void display(struct list *list);
+void display(List *list);
 void insert_begin(struct list *list, int value);
 void insert_end(struct list *list, int value);
 void delete_begin(struct list *list);
@@ -33,7 +33,6 @@ int main()
 
   int choice;
   int tempValue;
-  int tempPos;
 
   while (1)
   {
@@ -85,7 +84,7 @@ int main()
   return 0;
 }
 
-void display(struct list *list)
+void display(List *list)
 {
   struct node *ptr;
 
